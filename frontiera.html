@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Frontiera</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body onload="init()">
+    <header id="header">
+        <div class="headerInner">
+
+            <div class="logoImage">
+                <img class="logo" src="C:\Users\Ion\Desktop\Front-End\Lucrare_Tehnici_WEB_Donescu\foto\fmi.png" alt="FMI_LOGO">
+            </div>
+
+            <div class="course">
+                <h1>Geometrie computationala</h1>
+            </div>
+
+            <div class="student">
+                <p class="studentName">donescu ion</p>
+                <p class="studentYear">anul ii - idd </p>
+            </div>
+
+        </div>
+    </header>
+
+    <div id="board">
+        <div class="leftSide">
+            <p> Add point by coordinates </p>
+        </div>
+
+        <div class="centerSide">
+            <h5>DRAWING BOARD</h5>
+            <p>Insert point by mouseclick/by coordinates</p>
+            <canvas id="sketchpad" width="600" height="300"></canvas>
+            <input class="clearButton" type="submit" value="Clear drawing board" onclick="clearCanvas(canvas,ctx);">
+        </div>
+
+        <div class="rightSide">
+            <p> here i will put results</p>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
