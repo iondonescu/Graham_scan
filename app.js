@@ -18,6 +18,7 @@ function drawDot(ctx, x, y, size) {
     ctx.arc(x, y, size, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.fill();
+    ctx.fillText("(" + x + "," + y + ")", x+5, y+5);
 }
 
 // Clear the canvas context using the canvas width and height
@@ -33,9 +34,9 @@ function sketchpad_mouseDown(e) {
     drawDot(ctx, mouseX, mouseY, 2);
     sketckpadPoint = new point(mouseX, mouseY);
     sketchpadPoints.push(sketckpadPoint);
-    printElements();
+    printElementsCoordinates(mouseX, mouseY);
     //TO DO:
-		//sort array of points in sketchpadPoints: after x; check if x = x  if so, sort by y; and put it in a new array called LI;
+		
         //with the new sorted called LI (lower border) array:
 		//draw line between first and second, second and third;
         //with LI
@@ -85,16 +86,24 @@ function init() {
 }
 
 // put points in an array of objects
-
 function point(x,y) {
     this.x = x;
     this.y = y;
 }
 
-function printElements() {
+
+// dupa apasarea butonului run sorteaza sirul de puncte
+
+let button = document.getElementById('run');
+button.onclick = function () {
+    sortArray();
     for (let i = 0; i < sketchpadPoints.length; i++) {
         alert(sketchpadPoints[i].x + " " + sketchpadPoints[i].y);
     }
+};
+
+function sortArray() {
+    sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1);
 }
 
 

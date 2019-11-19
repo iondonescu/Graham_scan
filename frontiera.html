@@ -30,7 +30,10 @@
 
     <div id="board">
         <div class="leftSide">
-            <p> Add point by coordinates </p>
+            <p>
+                Graham's scan is a method of finding the convex hull of a finite set of points in the plane with time complexity O(n log n).
+                The algorithm finds all vertices of the convex hull ordered along its boundary. It uses a stack to detect and remove concavities in the boundary efficiently.
+            </p>
             <!-- TO DO:
                 implement input coordinates
                 -->
@@ -38,15 +41,13 @@
 
         <div class="centerSide">
             <h5>DRAWING BOARD</h5>
-            <p>Insert point by mouseclick/by coordinates</p>
+            <p>Insert point by mouseclick</p>
             <canvas id="sketchpad" width="600" height="300"></canvas>
             <input class="clearButton" type="submit" value="Clear drawing board" onclick="clearCanvas(canvas,ctx);">
         </div>
 
         <div class="rightSide">
-            <p> here i will put results</p>
-            <!-- TO DO:
-                implement output in steps shown in a canvas-->
+            <button id="run">Run</button>
         </div>
     </div>
     <script src="app.js"></script>
