@@ -1,10 +1,8 @@
 
-
-// Variables for referencing the canvas and 2dcanvas context
-var canvas, ctx;
-
-// Variables to keep track of the mouse position and left-button status 
-var mouseX, mouseY, mouseDown = 0;
+var canvas, ctx;// Variables for referencing the canvas and 2dcanvas context
+var mouseX, mouseY, mouseDown = 0;// Variables to keep track of the mouse position and left-button status 
+let sketckpadPoint;
+let sketchpadPoints =[];
 
 // Draws a dot at a specific position on the supplied canvas name
 // Parameters are: A canvas context, the x position, the y position, the size of the dot
@@ -25,6 +23,7 @@ function drawDot(ctx, x, y, size) {
 // Clear the canvas context using the canvas width and height
 function clearCanvas(canvas, ctx) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    sketchpadPoints = [];//clear the array
 }
 
 // Keep track of the mouse button being pressed and draw a dot at current location
@@ -32,16 +31,20 @@ function sketchpad_mouseDown(e) {
     mouseDown = 1;
     getMousePos(e);
     drawDot(ctx, mouseX, mouseY, 2);
-   
-		//construieste array cu fiecare punct inserat
+    sketckpadPoint = new point(mouseX, mouseY);
+    sketchpadPoints.push(sketckpadPoint);
+    printElements();
+    //TO DO:
+		//sort array of points in sketchpadPoints: after x; check if x = x  if so, sort by y; and put it in a new array called LI;
+        //with the new sorted called LI (lower border) array:
+		//draw line between first and second, second and third;
+        //with LI
+        //do
+		    //check if the line turns right(using math determinant)? if so, pop from LIS array the second, else push the third
+        //until the end.
+		//LI is the final inferior frontier
 
-		//sorteaza array dupa x cu o functie de sortare
-		//uneste punctele intre ele
-		//verifica determinantul a celor trei puncte (doua precedente, al treilea urmatorul)
-		//daca e viraj stanga sau pe linie push al treilea (intr-un alt sir LI)
-		// traseaza si sterge linii cu un delay
-		//altfel  precedent = urmatorul mergi la urmatorul
-		//LI este frontiera inferioara
+        //similar with LS(superior frontier) starting from the end;
     }
 
 // Keep track of the mouse button being released
@@ -80,3 +83,18 @@ function init() {
         window.addEventListener('mouseup', sketchpad_mouseUp, false);
     }
 }
+
+// put points in an array of objects
+
+function point(x,y) {
+    this.x = x;
+    this.y = y;
+}
+
+function printElements() {
+    for (let i = 0; i < sketchpadPoints.length; i++) {
+        alert(sketchpadPoints[i].x + " " + sketchpadPoints[i].y);
+    }
+}
+
+
