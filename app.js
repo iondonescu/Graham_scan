@@ -2,23 +2,21 @@
 var canvas, ctx;// Variables for referencing the canvas and 2dcanvas context
 var mouseX, mouseY, mouseDown = 0;// Variables to keep track of the mouse position and left-button status 
 let sketckpadPoint;
-let sketchpadPoints =[];
+let sketchpadPoints = [];
 
 // Draws a dot at a specific position on the supplied canvas name
 // Parameters are: A canvas context, the x position, the y position, the size of the dot
 function drawDot(ctx, x, y, size) {
     // Let's use black by setting RGB values to 0, and 255 alpha (completely opaque)
     r = 255; g = 0; b = 0; a = 255;
-
     // Select a fill style
     ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (a / 255) + ")";
-
     // Draw a filled circle
     ctx.beginPath();
     ctx.arc(x, y, size, 0, Math.PI * 2, true);
     ctx.closePath();
     ctx.fill();
-    ctx.fillText("(" + x + "," + y + ")", x+5, y+5);
+    ctx.fillText("(" + x + "," + (300 - y) + ")", x + 5, y + 5);
 }
 
 // Clear the canvas context using the canvas width and height
@@ -32,9 +30,9 @@ function sketchpad_mouseDown(e) {
     mouseDown = 1;
     getMousePos(e);
     drawDot(ctx, mouseX, mouseY, 2);
-    sketckpadPoint = new point(mouseX, mouseY);
+    sketckpadPoint = new point(mouseX, 300 - mouseY);//300 is the heigth of canvas, invert Y-axis
     sketchpadPoints.push(sketckpadPoint);
-    printElementsCoordinates(mouseX, mouseY);
+   
     //TO DO:
 		
         //with the new sorted called LI (lower border) array:
@@ -48,16 +46,10 @@ function sketchpad_mouseDown(e) {
         //similar with LS(superior frontier) starting from the end;
     }
 
-// Keep track of the mouse button being released
-function sketchpad_mouseUp() {
-    mouseDown = 0;
-}
-
 // Get the current mouse position relative to the top-left of the canvas
 function getMousePos(e) {
     if (!e)
         var e = event;
-
     if (e.offsetX) {
         mouseX = e.offsetX;
         mouseY = e.offsetY;
@@ -67,7 +59,6 @@ function getMousePos(e) {
         mouseY = e.layerY;
     }
 }
-
 
 // Set-up the canvas and add our event handlers after the page has loaded
 function init() {
@@ -85,25 +76,22 @@ function init() {
     }
 }
 
-// put points in an array of objects
+// constructor for points
 function point(x,y) {
     this.x = x;
     this.y = y;
 }
 
-
-// dupa apasarea butonului run sorteaza sirul de puncte
-
+// press run and sort array
 let button = document.getElementById('run');
 button.onclick = function () {
-    sortArray();
+    sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1);
+    /*
     for (let i = 0; i < sketchpadPoints.length; i++) {
         alert(sketchpadPoints[i].x + " " + sketchpadPoints[i].y);
     }
+    */
 };
 
-function sortArray() {
-    sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1);
-}
 
 
