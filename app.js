@@ -2,9 +2,15 @@
 var canvas, ctx;// Variables for referencing the canvas and 2dcanvas context
 var mouseX, mouseY;// Variables to keep track of the mouse position and left-button status 
 let sketckpadPoint;
-let sketchpadPoints = [];//
+let sketchpadPoints = [];//initial array of points from canvas
 let isCanvasActive = 1;// prevent insert points after "run" button is pressed;
 let button = document.getElementById('run');
+var nodeOrderedList = document.createElement("ol");
+var nodeLi = document.createElement("li");
+nodeOrderedList.appendChild(nodeLi);
+var textNode;
+let inferiorFrontier = [];
+let determinant;
 
 // Draws a dot at a specific position on the supplied canvas name
 // Parameters are: A canvas context, the x position, the y position, the size of the dot
@@ -22,12 +28,16 @@ function drawDot(ctx, x, y, size) {
     ctx.fillText("(" + x + "," + (300 - y) + ")", x + 5, y + 5);
 }
 
-// Clear the canvas context using the canvas width and height
+//Clear the canvas context using the canvas width and height
 function clearCanvas(canvas, ctx) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     isCanvasActive = 1;
-    sketchpadPoints = [];//clear the array
+    //clear the array
+    sketchpadPoints = [];
+    inferiorFrontier = [];
+    window.location.reload();
 }
+
 
 // Keep track of the mouse button being pressed and draw a dot at current location
 
@@ -79,7 +89,6 @@ function init() {
     // Check that we have a valid context to draw on/with before adding event handlers
     if (ctx) {
             canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
-            window.addEventListener('mouseup', sketchpad_mouseUp, false);
     }
 }
 
@@ -91,25 +100,64 @@ function point(x,y) {
 
 // press run button
 
-button.onclick = function () {
+button.addEventListener("click", function () {
+   
     isCanvasActive = 0;//after "run" button is pressed, stop inserting point
     //sort the array
-    sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1); 
-    //draw line
-    
-    for (let i = 0; i < sketchpadPoints.length - 1; i++) {
-        //alert(sketchpadPoints[i].x + " " + sketchpadPoints[i].y);
-        drawLine(i);
+    sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1);
+    // insert text - first step of the algorithm
+    textNode1 = document.createTextNode("Sort array of points,find the extreme - left point, draw a line to the next extreme point, and the third.");
+    nodeLi.appendChild(textNode1);
+    document.getElementById("algorithm").appendChild(nodeOrderedList);
+
+    // set new array for the frontier with the first three extreme -left points 
+    inferiorFrontier.push(sketchpadPoints[0]);
+    inferiorFrontier.push(sketchpadPoints[1]);
+    for (let i = 2; i < sketchpadPoints.length; i++) { 
+        // start the algorithm 
+        inferiorFrontier.push(sketchpadPoints[i]);
+        checkTurn();
     }
 
-    function drawLine(i) {
+    function checkTurn() {
+       /*
         ctx.beginPath();
-        ctx.moveTo(sketchpadPoints[i].x, 300 - sketchpadPoints[i].y);
-        ctx.lineTo(sketchpadPoints[i+1].x, 300 - sketchpadPoints[i+1].y);
+        ctx.moveTo(inferiorFrontier[inferiorFrontier.length - 3].x, 300 - inferiorFrontier[inferiorFrontier.length - 3].y);
+        ctx.lineTo(inferiorFrontier[inferiorFrontier.length - 2].x, 300 - inferiorFrontier[inferiorFrontier.length - 2].y);
         ctx.strokeStyle = "red";
         ctx.stroke();
+        ctx.beginPath();
+        ctx.moveTo(inferiorFrontier[inferiorFrontier.length - 2].x, 300 - inferiorFrontier[inferiorFrontier.length - 2].y);
+        ctx.lineTo(inferiorFrontier[inferiorFrontier.length - 1].x, 300 - inferiorFrontier[inferiorFrontier.length - 1].y);
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+        */
+        
+           calculateDeterminant();
+        
+        do { 
+            if (calculateDeterminant() < 0) {           
+                    inferiorFrontier.splice(inferiorFrontier.length - 2, 1);
+            }
+        } while (calculateDeterminant() < 0 && inferiorFrontier.length > 3);
+        
     }
-};
+    function calculateDeterminant() {
+        determinant = (((inferiorFrontier[inferiorFrontier.length - 2].x * inferiorFrontier[inferiorFrontier.length - 1].y) - (inferiorFrontier[inferiorFrontier.length - 2].y * inferiorFrontier[inferiorFrontier.length - 1].x)) -
+            ((inferiorFrontier[inferiorFrontier.length - 3].x * inferiorFrontier[inferiorFrontier.length - 1].y) - (inferiorFrontier[inferiorFrontier.length - 3].y * inferiorFrontier[inferiorFrontier.length - 1].x)) +
+            ((inferiorFrontier[inferiorFrontier.length - 3].x * inferiorFrontier[inferiorFrontier.length - 2].y) - (inferiorFrontier[inferiorFrontier.length - 3].y * inferiorFrontier[inferiorFrontier.length - 2].x)));
+        return determinant;
+    }
+
+    for (let i = 0; i < inferiorFrontier.length; i++) {
+        nodeOrderedList.appendChild(nodeLi);
+        textNode1 = document.createTextNode("("+inferiorFrontier[i].x + "," + inferiorFrontier[i].y +")");
+        nodeLi.appendChild(textNode1);
+        //alert();
+    }
+    inferiorFrontier = [];
+})
 
 
 
+    
