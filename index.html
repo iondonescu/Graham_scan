@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8" />
+    <title>Frontiera</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body onload="init()">
+    <header id="header">
+        <div class="headerInner">
+
+            <div class="logoImage">
+                <img class="logo" src="C:\Users\Ion\Desktop\Front-End\Lucrare_Tehnici_WEB_Donescu\foto\fmi.png" alt="FMI_LOGO">
+            </div>
+
+            <div class="course">
+                <h1>Computational Geometry</h1>
+            </div>
+
+            <div class="student">
+                <p class="studentName">donescu ion</p>
+                <p class="studentYear">anul ii - idd </p>
+            </div>
+
+        </div>
+    </header>
+
+    <h2 id="alghoritmTitle">Graham's scan algorithm</h2>
+
+    <div id="board">
+        <div class="leftSide">
+            <p>
+                Graham's scan is a method of finding the convex hull of a finite set of points in the plane with time complexity O(n log n).
+                The algorithm finds all vertices of the convex hull ordered along its boundary. It uses a stack to detect and remove concavities in the boundary efficiently.
+            </p>
+            <!-- TO DO:
+                implement input coordinates
+                -->
+        </div>
+
+        <div class="centerSide">
+            <h5>DRAWING BOARD</h5>
+            <p>Insert point by mouseclick</p>
+            <canvas id="sketchpad" width="600" height="300"></canvas>
+            <input class="clearButton" type="submit" value="Clear drawing board" onclick="clearCanvas(canvas,ctx);">
+        </div>
+
+        <div class="rightSide">
+            <button id="run">Run</button>
+            <section id="algorithm"></section>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
