@@ -1,11 +1,14 @@
 
 var canvas, ctx;// Variables for referencing the canvas and 2dcanvas context
-var mouseX, mouseY, mouseDown = 0;// Variables to keep track of the mouse position and left-button status 
+var mouseX, mouseY;// Variables to keep track of the mouse position and left-button status 
 let sketckpadPoint;
-let sketchpadPoints = [];
+let sketchpadPoints = [];//
+let isCanvasActive = 1;// prevent insert points after "run" button is pressed;
+let button = document.getElementById('run');
 
 // Draws a dot at a specific position on the supplied canvas name
 // Parameters are: A canvas context, the x position, the y position, the size of the dot
+
 function drawDot(ctx, x, y, size) {
     // Let's use black by setting RGB values to 0, and 255 alpha (completely opaque)
     r = 255; g = 0; b = 0; a = 255;
@@ -22,43 +25,47 @@ function drawDot(ctx, x, y, size) {
 // Clear the canvas context using the canvas width and height
 function clearCanvas(canvas, ctx) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    isCanvasActive = 1;
     sketchpadPoints = [];//clear the array
 }
 
 // Keep track of the mouse button being pressed and draw a dot at current location
+
 function sketchpad_mouseDown(e) {
-    mouseDown = 1;
-    getMousePos(e);
-    drawDot(ctx, mouseX, mouseY, 2);
-    sketckpadPoint = new point(mouseX, 300 - mouseY);//300 is the heigth of canvas, invert Y-axis
-    sketchpadPoints.push(sketckpadPoint);
-   
-    //TO DO:
-		
+    if (isCanvasActive === 1) {
+        getMousePos(e);
+        drawDot(ctx, mouseX, mouseY, 2);
+        sketckpadPoint = new point(mouseX, 300 - mouseY);//300 is the heigth of canvas, invert Y-axis
+        sketchpadPoints.push(sketckpadPoint);
+
+        //TO DO:
+
         //with the new sorted called LI (lower border) array:
-		//draw line between first and second, second and third;
+        //draw line between first and second, second and third;
         //with LI
         //do
-		    //check if the line turns right(using math determinant)? if so, pop from LIS array the second, else push the third
+        //check if the line turns right(using math determinant)? if so, pop from LIS array the second, else push the third
         //until the end.
-		//LI is the final inferior frontier
+        //LI is the final inferior frontier
 
         //similar with LS(superior frontier) starting from the end;
     }
+}
 
 // Get the current mouse position relative to the top-left of the canvas
-function getMousePos(e) {
-    if (!e)
-        var e = event;
-    if (e.offsetX) {
-        mouseX = e.offsetX;
-        mouseY = e.offsetY;
+    function getMousePos(e) {
+        if (!e)
+            var e = event;
+        if (e.offsetX) {
+            mouseX = e.offsetX;
+            mouseY = e.offsetY;
+        }
+        else if (e.layerX) {
+            mouseX = e.layerX;
+            mouseY = e.layerY;
+        }
     }
-    else if (e.layerX) {
-        mouseX = e.layerX;
-        mouseY = e.layerY;
-    }
-}
+
 
 // Set-up the canvas and add our event handlers after the page has loaded
 function init() {
@@ -71,8 +78,8 @@ function init() {
 
     // Check that we have a valid context to draw on/with before adding event handlers
     if (ctx) {
-        canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
-        window.addEventListener('mouseup', sketchpad_mouseUp, false);
+            canvas.addEventListener('mousedown', sketchpad_mouseDown, false);
+            window.addEventListener('mouseup', sketchpad_mouseUp, false);
     }
 }
 
@@ -82,15 +89,26 @@ function point(x,y) {
     this.y = y;
 }
 
-// press run and sort array
-let button = document.getElementById('run');
+// press run button
+
 button.onclick = function () {
-    sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1);
-    /*
-    for (let i = 0; i < sketchpadPoints.length; i++) {
-        alert(sketchpadPoints[i].x + " " + sketchpadPoints[i].y);
+    isCanvasActive = 0;//after "run" button is pressed, stop inserting point
+    //sort the array
+    sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1); 
+    //draw line
+    
+    for (let i = 0; i < sketchpadPoints.length - 1; i++) {
+        //alert(sketchpadPoints[i].x + " " + sketchpadPoints[i].y);
+        drawLine(i);
     }
-    */
+
+    function drawLine(i) {
+        ctx.beginPath();
+        ctx.moveTo(sketchpadPoints[i].x, 300 - sketchpadPoints[i].y);
+        ctx.lineTo(sketchpadPoints[i+1].x, 300 - sketchpadPoints[i+1].y);
+        ctx.strokeStyle = "red";
+        ctx.stroke();
+    }
 };
 
 

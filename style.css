@@ -80,13 +80,13 @@
 
 .centerSide {
     width: 50%;
-    background-color: #def;
+    background-color: azure;
     padding: 10px;
     border-radius: 4px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding-bottom:0;
+    padding-bottom: 0;
 }
 
 .centerSide > h5, .centerSide>p {
@@ -94,7 +94,7 @@
 }
 
 #sketchpad {
-    background-color: #def;
+    background-color: azure;
     border: 1px solid #888;
     border-radius: 4px;
     position: relative; /* Necessary for correct mouse co-ords in Firefox */
