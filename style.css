@@ -32,11 +32,11 @@
     text-align: center;
 }
 
-    .course > h1 {
-        margin: 0;
-        padding-top: 10px;
-        font-size: 24px;
-    }
+.course > h1 {
+    margin: 0;
+    padding-top: 15px;
+    font-size: 24px;
+}
 
 .student {
     padding-top: 0px;
@@ -51,7 +51,7 @@
     font-size: 20px;
     text-transform: uppercase;
     margin: 0;
-    padding-top: 0px;
+    padding-top: 10px;
 }
 
 .studentYear {
@@ -75,13 +75,17 @@
 .leftSide {
     width: 20%;
     float: left;
+    margin-left:5px;
     background-color: lightyellow;
     padding: 10px;
-    
+    z-index: 1;
+    border-style: groove;
 }
 .leftSide>p {
     text-align:center;
-   
+}
+.leftSide>h3 {
+    text-align:center;
 }
 .centerSide {
     width: 60%;
@@ -94,9 +98,9 @@
     padding-bottom: 0;
 }
 
-    .centerSide > h5, .centerSide > p {
-        margin: 0;
-    }
+.centerSide > h3, .centerSide > p {
+    margin: 0;
+}
 
 #sketchpad {
     background-color: white;
@@ -112,6 +116,23 @@
 .rightSide {
     width: 20%;
     float: right;
+    margin-right: 5px;
     background-color: lightyellow;
     padding: 10px;
+    z-index: 1;
+    border-style: groove;
 }
+.checkFrontier {
+    text-align: center;
+    text-transform: uppercase;
+}
+.button {
+    width:100%;
+    display:inline-flex;
+    flex-direction:row;
+}
+#inferior,#superior{
+    width:50%;
+    margin:0px 20px;
+}
+

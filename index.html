@@ -30,6 +30,7 @@
 
     <div id="board">
         <div class="leftSide">
+            <h3>ABOUT</h3>
             <p>
                 Graham's scan is a method of finding the convex hull of a finite set of points in the plane with time complexity O(n log n).
                 The algorithm finds all vertices of the convex hull ordered along its boundary. It uses a stack to detect and remove concavities in the boundary efficiently.
@@ -38,15 +39,19 @@
         </div>
 
         <div class="centerSide">
-            <h5>DRAWING BOARD</h5>
+            <h3>DRAWING BOARD</h3>
             <p>Insert point by mouseclick/fingerprint</p>
             <canvas id="sketchpad" width="600" height="300"></canvas>
             <input class="clearButton" type="submit" value="Clear drawing board" onclick="clearCanvas(canvas,ctx);">
         </div>
 
         <div class="rightSide">
-            <button id="run">Run</button>
-            <section id="algorithm"></section>
+            <h3 class="checkFrontier">check the frontier</h3>
+            <section class="button">
+                <button id="inferior" >Inferior Frontier</button>     
+                <button id="superior" >Superior Frontier</button>  
+            </section>
+                <p id="frontier"></p>
         </div>
     </div>
     <script src="app.js"></script>

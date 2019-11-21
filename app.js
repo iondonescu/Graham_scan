@@ -2,21 +2,22 @@ var canvas, ctx;// Variables for referencing the canvas and 2dcanvas context
 var mouseX, mouseY;// Variables to keep track of the mouse position and left-button status 
 let sketckpadPoint;
 let sketchpadPoints = [];//initial array of points from canvas
+let sketchpadPointsReverse = [];
 let isCanvasActive = 1;// prevent insert points after "run" button is pressed;
-let button = document.getElementById('run');
-var nodeOrderedList = document.createElement("ol");
-var nodeLi = document.createElement("li");
-nodeOrderedList.appendChild(nodeLi);
+let inferior = document.getElementById('inferior');
+let superior = document.getElementById('superior');
+var node = document.createElement("P");
 var textNode;
-let inferiorFrontier = [];
+let frontier = [];
 let determinant;
+let color;
 
 // Draws a dot at a specific position on the supplied canvas name
 // Parameters are: A canvas context, the x position, the y position, the size of the dot
 
 function drawDot(ctx, x, y, size) {
     // Let's use a color by setting RGB 255 alpha (completely opaque)
-    r = 255; g = 0; b = 0; a = 255;
+    r = 100; g = 100; b = 0; a = 255;
     // Select a fill style
     ctx.fillStyle = "rgba(" + r + "," + g + "," + b + "," + (a / 255) + ")";
     // Draw a filled circle
@@ -33,7 +34,7 @@ function clearCanvas(canvas, ctx) {
     isCanvasActive = 1;
     //clear the array
     sketchpadPoints = [];
-    inferiorFrontier = [];
+    frontier = [];
     window.location.reload();
 }
 
@@ -43,21 +44,9 @@ function clearCanvas(canvas, ctx) {
 function sketchpad_mouseDown(e) {
     if (isCanvasActive === 1) {
         getMousePos(e);
-        drawDot(ctx, mouseX, mouseY, 2);
+        drawDot(ctx, mouseX, mouseY,2.5);
         sketckpadPoint = new point(mouseX, 300 - mouseY);//300 is the heigth of canvas, invert Y-axis
         sketchpadPoints.push(sketckpadPoint);
-
-        //TO DO:
-
-        //with the new sorted called LI (lower border) array:
-        //draw line between first and second, second and third;
-        //with LI
-        //do
-        //check if the line turns right(using math determinant)? if so, pop from LIS array the second, else push the third
-        //until the end.
-        //LI is the final inferior frontier
-
-        //similar with LS(superior frontier) starting from the end;
     }
 }
 
@@ -97,85 +86,100 @@ function point(x, y) {
     this.y = y;
 }
 
+
 // press run button
 
-button.addEventListener("click", function () {
-
+inferior.addEventListener("click", function () {
     isCanvasActive = 0;//after "run" button is pressed, stop inserting point
     //sort the array
     sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1);
-    // insert text - first step of the algorithm
-    showStackPoints("Inferior Frontier is:{");
+    color = "black";
+    frontierType("Inferior Frontier", sketchpadPoints,color);
+    
+});
 
+superior.addEventListener("click", function () {
+    isCanvasActive = 0;//after "run" button is pressed, stop inserting point
+    sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1);
+    sketchpadPoints.reverse();
+    color = "blue";
+    frontierType("Superior Frontier", sketchpadPoints,color);
+});
+
+function frontierType(choice,sketchpadPoints,color) {
+    showStackPoints(choice + " = {");
     // set new array for the frontier with the first two extreme -left points 
-    inferiorFrontier.push(sketchpadPoints[0]);
-    inferiorFrontier.push(sketchpadPoints[1]);
+    frontier.push(sketchpadPoints[0]);
+    frontier.push(sketchpadPoints[1]);
 
     //push first point ,second , draw red line
-    drawLine("red", 0, 1);
+    drawLine("rgb(255, 230, 230)", 0, 1);
+
     for (let i = 2; i < sketchpadPoints.length; i++) {
         // start the algorithm 
-        inferiorFrontier.push(sketchpadPoints[i]);
+        frontier.push(sketchpadPoints[i]);
 
         //push point red, draw red line
-        drawLine("red", inferiorFrontier.length - 2, inferiorFrontier.length - 1);
+        drawLine("rgb(255, 230, 230)", frontier.length - 2, frontier.length - 1);
         checkTurn();
     }
+
     function checkTurn() {
-        
-            calculateDeterminant();
+
+        calculateDeterminant();
 
         while (calculateDeterminant() < 0) {
-           
-                drawLine("white", inferiorFrontier.length - 1, inferiorFrontier.length - 2);
-                drawLine("white", inferiorFrontier.length - 2, inferiorFrontier.length - 3);
-            
-                inferiorFrontier.splice(inferiorFrontier.length - 2, 1);
-                drawLine("red", inferiorFrontier.length - 1, inferiorFrontier.length - 2);
-                //remove behind from list, and remove lines (draw context colored line from second-first behind, and curent point)
-                // draw red line second current point
 
-                if (inferiorFrontier.length < 3) break;
+            drawLine("rgb(255, 230, 230)", frontier.length - 1, frontier.length - 2);
+            drawLine("rgb(255, 230, 230)", frontier.length - 2, frontier.length - 3);
+
+            frontier.splice(frontier.length - 2, 1);
+            drawLine("rgb(255, 230, 230)", frontier.length - 1, frontier.length - 2);
+            //remove behind from list, and remove lines (draw context colored line from second-first behind, and curent point)
+            // draw red line second current point
+
+            if (frontier.length < 3) break;
         }
 
     }
     function calculateDeterminant() {
-        determinant = (((inferiorFrontier[inferiorFrontier.length - 2].x * inferiorFrontier[inferiorFrontier.length - 1].y) - (inferiorFrontier[inferiorFrontier.length - 2].y * inferiorFrontier[inferiorFrontier.length - 1].x)) -
-            ((inferiorFrontier[inferiorFrontier.length - 3].x * inferiorFrontier[inferiorFrontier.length - 1].y) - (inferiorFrontier[inferiorFrontier.length - 3].y * inferiorFrontier[inferiorFrontier.length - 1].x)) +
-            ((inferiorFrontier[inferiorFrontier.length - 3].x * inferiorFrontier[inferiorFrontier.length - 2].y) - (inferiorFrontier[inferiorFrontier.length - 3].y * inferiorFrontier[inferiorFrontier.length - 2].x)));
+        determinant = (((frontier[frontier.length - 2].x * frontier[frontier.length - 1].y) - (frontier[frontier.length - 2].y * frontier[frontier.length - 1].x)) -
+            ((frontier[frontier.length - 3].x * frontier[frontier.length - 1].y) - (frontier[frontier.length - 3].y * frontier[frontier.length - 1].x)) +
+            ((frontier[frontier.length - 3].x * frontier[frontier.length - 2].y) - (frontier[frontier.length - 3].y * frontier[frontier.length - 2].x)));
         return determinant;
     }
-    
-    for (let i = 0; i < inferiorFrontier.length; i++) {
-        showStackPoints("(" + inferiorFrontier[i].x + "," + inferiorFrontier[i].y + ")" + ";");
+
+    for (let i = 0; i < frontier.length; i++) {
+        showStackPoints("(" + frontier[i].x + "," + frontier[i].y + ")" + ";");
     }
     
-
     showStackPoints("}");
-
-    // draw lines for the final frontier
-
     // 
     function showStackPoints(value) {
         textNode = document.createTextNode(value);
-        nodeLi.appendChild(textNode);
-        document.getElementById("algorithm").appendChild(nodeOrderedList);
+        node.appendChild(textNode);
+        document.getElementById("frontier").appendChild(node);        
     };
 
-    for (i = 0; i < inferiorFrontier.length - 1; i++) {
+    for (i = 0; i < frontier.length - 1; i++) {
         ctx.beginPath();
-        ctx.moveTo(inferiorFrontier[i].x, 300 - inferiorFrontier[i].y);
-        ctx.lineTo(inferiorFrontier[i+1].x, 300 - inferiorFrontier[i+1].y);
-        ctx.strokeStyle = "black";
-        ctx.stroke();
-    }
-
-    function drawLine(color,a,b) {
-        ctx.beginPath();
-        ctx.moveTo(inferiorFrontier[a].x, 300 - inferiorFrontier[a].y);
-        ctx.lineTo(inferiorFrontier[b].x, 300 - inferiorFrontier[b].y);
+        ctx.moveTo(frontier[i].x, 300 - frontier[i].y);
+        ctx.lineTo(frontier[i + 1].x, 300 - frontier[i + 1].y);
         ctx.strokeStyle = color;
         ctx.stroke();
     }
-    inferiorFrontier = [];
-})
+
+    function drawLine(color, a, b) {
+        ctx.beginPath();
+        ctx.moveTo(frontier[a].x, 300 - frontier[a].y);
+        ctx.lineTo(frontier[b].x, 300 - frontier[b].y);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+    }
+  
+    frontier=[];
+}
+    
+  
+    
+
