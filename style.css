@@ -1,68 +1,69 @@
-﻿   body{
-       margin:0;
-   } 
+﻿body {
+    margin: 0;
+}
+
 #header {
-        background-color: #c9f2f2;
-        box-shadow: 0px 3px #888888;
-        margin-bottom: 10px;
-        height: 60px;
-        margin-right: 0;
-    }
+    background-color: #c9f2f2;
+    box-shadow: 0px 3px #888888;
+    margin-bottom: 10px;
+    height: 60px;
+    margin-right: 0;
+}
 
-    .headerInner {
-        width: 100%;
-        display: inline-flex;
-    }
+.headerInner {
+    width: 100%;
+    display: inline-flex;
+}
 
-    .logoImage {
-        width: 33.33%;
-    }
+.logoImage {
+    width: 33.33%;
+}
 
-    .logo {
-        height: 40px;
-        padding-left: 20px;
-        padding-top: 10px;
-        width: 33.33%;
-    }
+.logo {
+    height: 40px;
+    padding-left: 20px;
+    padding-top: 10px;
+    width: 33.33%;
+}
 
-    .course {
-        font-size: 20px;
-        width: 33.33%;
-        text-align: center;
-    }
+.course {
+    font-size: 20px;
+    width: 33.33%;
+    text-align: center;
+}
 
     .course > h1 {
         margin: 0;
         padding-top: 10px;
-        font-size:24px;
+        font-size: 24px;
     }
 
-    .student {
-        padding-top: 0px;
-        padding-right: 5px;
-        color: #2d3c49;
-        width: 33.33%;
-        display: grid;
-        text-align: center;
-    }
+.student {
+    padding-top: 0px;
+    padding-right: 5px;
+    color: #2d3c49;
+    width: 33.33%;
+    display: grid;
+    text-align: center;
+}
 
-    .studentName {
-        font-size: 20px;
-        text-transform: uppercase;
-        margin: 0;
-        padding-top: 0px;
-    }
+.studentName {
+    font-size: 20px;
+    text-transform: uppercase;
+    margin: 0;
+    padding-top: 0px;
+}
 
-    .studentYear {
-        font-size: 12px;
-        text-transform: uppercase;
-        margin: 0;
-    }
-    /*end of header style*/
+.studentYear {
+    font-size: 12px;
+    text-transform: uppercase;
+    margin: 0;
+}
+/*end of header style*/
 
-#alghoritmTitle{
-    text-align:center;
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+#alghoritmTitle {
+    text-align: center;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 #board {
@@ -72,7 +73,7 @@
 }
 
 .leftSide {
-    width:10%;
+    width: 15%;
     float: left;
     background-color: lightyellow;
     padding: 10px;
@@ -89,9 +90,9 @@
     padding-bottom: 0;
 }
 
-.centerSide > h5, .centerSide>p {
-    margin:0;
-}
+    .centerSide > h5, .centerSide > p {
+        margin: 0;
+    }
 
 #sketchpad {
     background-color: azure;
@@ -100,12 +101,12 @@
     position: relative; /* Necessary for correct mouse co-ords in Firefox */
 }
 
-.clearButton{
-    margin:5px;
+.clearButton {
+    margin: 5px;
 }
 
 .rightSide {
-    width: 35%;
+    width: 30%;
     float: right;
     background-color: lightyellow;
     padding: 10px;
