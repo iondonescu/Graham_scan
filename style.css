@@ -73,14 +73,18 @@
 }
 
 .leftSide {
-    width: 15%;
+    width: 20%;
     float: left;
     background-color: lightyellow;
     padding: 10px;
+    
 }
-
+.leftSide>p {
+    text-align:center;
+   
+}
 .centerSide {
-    width: 55%;
+    width: 60%;
     background-color: azure;
     padding: 10px;
     border-radius: 4px;
@@ -95,7 +99,7 @@
     }
 
 #sketchpad {
-    background-color: azure;
+    background-color: white;
     border: 1px solid #888;
     border-radius: 4px;
     position: relative; /* Necessary for correct mouse co-ords in Firefox */
@@ -106,7 +110,7 @@
 }
 
 .rightSide {
-    width: 30%;
+    width: 20%;
     float: right;
     background-color: lightyellow;
     padding: 10px;

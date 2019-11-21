@@ -105,26 +105,38 @@ button.addEventListener("click", function () {
     //sort the array
     sketchpadPoints.sort((a, b) => (a.x > b.x) ? 1 : (a.x === b.x) ? ((a.y > b.y) ? 1 : -1) : -1);
     // insert text - first step of the algorithm
-    textNode1 = document.createTextNode("Inferior Frontier is:{");
-    nodeLi.appendChild(textNode1);
-    document.getElementById("algorithm").appendChild(nodeOrderedList);
+    showStackPoints("Inferior Frontier is:{");
 
-    // set new array for the frontier with the first three extreme -left points 
+    // set new array for the frontier with the first two extreme -left points 
     inferiorFrontier.push(sketchpadPoints[0]);
     inferiorFrontier.push(sketchpadPoints[1]);
+
+    //push first point ,second , draw red line
+    drawLine("red", 0, 1);
     for (let i = 2; i < sketchpadPoints.length; i++) {
         // start the algorithm 
         inferiorFrontier.push(sketchpadPoints[i]);
+
+        //push point red, draw red line
+        drawLine("red", inferiorFrontier.length - 2, inferiorFrontier.length - 1);
         checkTurn();
     }
-
     function checkTurn() {
-        calculateDeterminant();
         
-        while (calculateDeterminant() < 0){         
-            inferiorFrontier.splice(inferiorFrontier.length - 2, 1);
-            if (inferiorFrontier.length < 3) break;      
-        } 
+            calculateDeterminant();
+
+        while (calculateDeterminant() < 0) {
+           
+                drawLine("white", inferiorFrontier.length - 1, inferiorFrontier.length - 2);
+                drawLine("white", inferiorFrontier.length - 2, inferiorFrontier.length - 3);
+            
+                inferiorFrontier.splice(inferiorFrontier.length - 2, 1);
+                drawLine("red", inferiorFrontier.length - 1, inferiorFrontier.length - 2);
+                //remove behind from list, and remove lines (draw context colored line from second-first behind, and curent point)
+                // draw red line second current point
+
+                if (inferiorFrontier.length < 3) break;
+        }
 
     }
     function calculateDeterminant() {
@@ -133,27 +145,37 @@ button.addEventListener("click", function () {
             ((inferiorFrontier[inferiorFrontier.length - 3].x * inferiorFrontier[inferiorFrontier.length - 2].y) - (inferiorFrontier[inferiorFrontier.length - 3].y * inferiorFrontier[inferiorFrontier.length - 2].x)));
         return determinant;
     }
-
+    
     for (let i = 0; i < inferiorFrontier.length; i++) {
-        nodeOrderedList.appendChild(nodeLi);
-        textNode1 = document.createTextNode("(" + inferiorFrontier[i].x + "," + inferiorFrontier[i].y + ")" +";");
-        nodeLi.appendChild(textNode1);
-        //alert();
+        showStackPoints("(" + inferiorFrontier[i].x + "," + inferiorFrontier[i].y + ")" + ";");
     }
-    textNode1 = document.createTextNode("}");
-    nodeLi.appendChild(textNode1);
-    document.getElementById("algorithm").appendChild(nodeOrderedList);
+    
+
+    showStackPoints("}");
+
+    // draw lines for the final frontier
+
+    // 
+    function showStackPoints(value) {
+        textNode = document.createTextNode(value);
+        nodeLi.appendChild(textNode);
+        document.getElementById("algorithm").appendChild(nodeOrderedList);
+    };
+
+    for (i = 0; i < inferiorFrontier.length - 1; i++) {
+        ctx.beginPath();
+        ctx.moveTo(inferiorFrontier[i].x, 300 - inferiorFrontier[i].y);
+        ctx.lineTo(inferiorFrontier[i+1].x, 300 - inferiorFrontier[i+1].y);
+        ctx.strokeStyle = "black";
+        ctx.stroke();
+    }
+
+    function drawLine(color,a,b) {
+        ctx.beginPath();
+        ctx.moveTo(inferiorFrontier[a].x, 300 - inferiorFrontier[a].y);
+        ctx.lineTo(inferiorFrontier[b].x, 300 - inferiorFrontier[b].y);
+        ctx.strokeStyle = color;
+        ctx.stroke();
+    }
     inferiorFrontier = [];
 })
-/*
-  ctx.beginPath();
-  ctx.moveTo(inferiorFrontier[inferiorFrontier.length - 3].x, 300 - inferiorFrontier[inferiorFrontier.length - 3].y);
-  ctx.lineTo(inferiorFrontier[inferiorFrontier.length - 2].x, 300 - inferiorFrontier[inferiorFrontier.length - 2].y);
-  ctx.strokeStyle = "red";
-  ctx.stroke();
-  ctx.beginPath();
-  ctx.moveTo(inferiorFrontier[inferiorFrontier.length - 2].x, 300 - inferiorFrontier[inferiorFrontier.length - 2].y);
-  ctx.lineTo(inferiorFrontier[inferiorFrontier.length - 1].x, 300 - inferiorFrontier[inferiorFrontier.length - 1].y);
-  ctx.strokeStyle = "red";
-  ctx.stroke();
-  */
