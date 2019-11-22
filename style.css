@@ -131,8 +131,9 @@
     display:inline-flex;
     flex-direction:row;
 }
-#inferior,#superior{
-    width:50%;
-    margin:0px 20px;
+#inferior, #superior {
+    width: 50%;
+    margin: 0px 20px;
+    box-shadow: 5px 5px 5px #888888
 }
 
