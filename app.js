@@ -1,16 +1,16 @@
 var canvas, ctx;// Variables for referencing the canvas and 2dcanvas context
 var mouseX, mouseY;// Variables to keep track of the mouse position and left-button status 
-let sketckpadPoint;
+let sketckpadPoint;// points drawn on canvas
 let sketchpadPoints = [];//initial array of points from canvas
-let sketchpadPointsReverse = [];
+let sketchpadPointsReverse = [];// reversed array for superior frontier
 let isCanvasActive = 1;// prevent insert points after "run" button is pressed;
 let inferior = document.getElementById('inferior');
 let superior = document.getElementById('superior');
-var node;
-var textNode;
-let frontier = [];
-let determinant;
-let color;
+var node;//append in html an ul
+var textNode;// insert text in ul
+let frontier = [];// stack to insert and remove frontier elements
+let determinant;// check how the turm is
+let color; // color of the frontier
 
 // Draws a dot at a specific position on the supplied canvas name
 // Parameters are: A canvas context, the x position, the y position, the size of the dot
@@ -87,7 +87,7 @@ function point(x, y) {
 }
 
 
-// press run button
+// press button
 
 inferior.addEventListener("click", function () {
     isCanvasActive = 0;//after "run" button is pressed, stop inserting point
@@ -106,6 +106,7 @@ superior.addEventListener("click", function () {
     frontierType("Superior Frontier", sketchpadPoints,color);
 });
 
+// draw and calculate the frontier
 function frontierType(choice, sketchpadPoints, color) {
     node = document.createElement("li");
     showStackPoints(choice + " = {");
@@ -149,9 +150,12 @@ function frontierType(choice, sketchpadPoints, color) {
             ((frontier[frontier.length - 3].x * frontier[frontier.length - 2].y) - (frontier[frontier.length - 3].y * frontier[frontier.length - 2].x)));
         return determinant;
     }
-    
+
+    // print points of the frontier
     for (let i = 0; i < frontier.length; i++) {
-        showStackPoints("(" + frontier[i].x + "," + frontier[i].y + ")" + ";");
+        if (i != (frontier.length - 1)) showStackPoints("(" + frontier[i].x + "," + frontier[i].y + ")" + ";");
+        else showStackPoints("(" + frontier[i].x + "," + frontier[i].y + ")");
+        
     }
     
     showStackPoints("}");
@@ -162,6 +166,7 @@ function frontierType(choice, sketchpadPoints, color) {
         document.getElementById("frontier").appendChild(node);        
     };
 
+    //draw the frontier
     for (i = 0; i < frontier.length - 1; i++) {
         ctx.beginPath();
         ctx.moveTo(frontier[i].x, 300 - frontier[i].y);
