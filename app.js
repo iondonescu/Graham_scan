@@ -6,7 +6,7 @@ let sketchpadPointsReverse = [];
 let isCanvasActive = 1;// prevent insert points after "run" button is pressed;
 let inferior = document.getElementById('inferior');
 let superior = document.getElementById('superior');
-var node = document.createElement("P");
+var node;
 var textNode;
 let frontier = [];
 let determinant;
@@ -106,7 +106,8 @@ superior.addEventListener("click", function () {
     frontierType("Superior Frontier", sketchpadPoints,color);
 });
 
-function frontierType(choice,sketchpadPoints,color) {
+function frontierType(choice, sketchpadPoints, color) {
+    node = document.createElement("li");
     showStackPoints(choice + " = {");
     // set new array for the frontier with the first two extreme -left points 
     frontier.push(sketchpadPoints[0]);
@@ -148,7 +149,7 @@ function frontierType(choice,sketchpadPoints,color) {
             ((frontier[frontier.length - 3].x * frontier[frontier.length - 2].y) - (frontier[frontier.length - 3].y * frontier[frontier.length - 2].x)));
         return determinant;
     }
-
+    
     for (let i = 0; i < frontier.length; i++) {
         showStackPoints("(" + frontier[i].x + "," + frontier[i].y + ")" + ";");
     }
